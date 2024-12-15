@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./models/Users.model.js');
 const UserRoute = require('./routes/Users.routes.js');
+const TurfRoute = require('./routes/Turfs.routes.js');
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
 app.use('/api/users',UserRoute);
+app.use('/api/turfs',TurfRoute);
 
 mongoose.connect('mongodb+srv://admin:12345@nodeapi.ydbub.mongodb.net/?retryWrites=true&w=majority&appName=NodeAPI')
 .then(()=>{
