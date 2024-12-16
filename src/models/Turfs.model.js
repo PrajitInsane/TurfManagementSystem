@@ -5,7 +5,8 @@ const TurfSchema= mongoose.Schema({
     turf_location:{type:String,required:true},
     turf_contact:{type:Number,required:true , unique:true},
     turf_email:{type:String,required:true , unique:true},
-    turf_price:{type:Number,required:true}
+    turf_price:{type:Number,required:true},
+    turf_image:{type:String}
 },{
     timestamps:true
 });
