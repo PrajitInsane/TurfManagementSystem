@@ -6,6 +6,7 @@ import Contacts from './components/Contacts'
 import Login from './components/Login'
 import Profile from './components/Profile'
 import PrivateRoute from './components/PrivateRoute'
+import SignUp from './components/SignUp'
 import { Routes ,Route} from 'react-router-dom'
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path='/about' element={<About/>}></Route>
           <Route path='/contact' element={<Contacts/>}></Route>
           <Route path="/login" element={<Login />} />
+          <Route path='/signup' element={<SignUp/>} />
         
         {/* Protect this route */}
         <Route element={<PrivateRoute />}>

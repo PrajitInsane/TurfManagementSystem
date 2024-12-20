@@ -24,10 +24,10 @@ const Header = () => {
             isActive
               ? 'bg-black text-purple-300 h-full w-full rounded flex justify-center items-center'
               : 'hover:bg-black text-purple-300 h-full w-full rounded flex justify-center items-center'}>Login</NavLink></button>
-            <button className='hover:bg-black h-9 w-24 rounded'><NavLink to='/sigin' className={({ isActive }) =>
+            <button className='hover:bg-black h-9 w-24 rounded'><NavLink to='/signup' className={({ isActive }) =>
             isActive
               ? 'bg-black text-purple-300 h-full w-full rounded flex justify-center items-center'
-              : 'hover:bg-black text-purple-300 h-full w-full rounded flex justify-center items-center'}>SignIn</NavLink></button>
+              : 'hover:bg-black text-purple-300 h-full w-full rounded flex justify-center items-center'}>SignUp</NavLink></button>
         </div>
     </div>
   )
