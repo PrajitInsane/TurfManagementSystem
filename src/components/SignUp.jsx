@@ -1,13 +1,16 @@
 import React, { useState,useContext} from 'react';
-import { signup } from '../api';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
+
 
 const Signup = () => {
-
-  
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { signup } = useContext(AuthContext);
 
   const handleReset = () => {
     setName('');
@@ -19,18 +22,14 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await signup(name, email, password);
+      const response = await axios.post('http://localhost:5000/api/users/signup', { name, email, password });
       console.log(response.data);
 
-      // Store JWT token in localStorage
-      localStorage.setItem('token', response.data.token);
-
-      alert('Signup successful! Redirecting to your profile...');
-      
-      // Redirect to the profile page
-      window.location.href = '/profile';
+      const token = response.data.token;
+      signup(token); // Update auth state
+      navigate('/profile'); 
     } catch (err) {
-      console.error('Signup Error:', err.response.data);
+      console.error('Signup Error:', err);
       alert(err.response.data.message || 'Signup failed');
     }
   };

@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState , useContext  } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import { login } from '../api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(email, password);
+      const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
       console.log(response.data);
 
-      // Store JWT token in localStorage
-      localStorage.setItem('token', response.data.token);
+      const token = response.data.token;
+      login(token); // Update auth state
+      navigate('/profile'); 
 
-      alert('Login successful!');
-      // Redirect to the profile page
-      window.location.href = '/profile';
     } catch (err) {
-      console.error('Login Error:', err.response.data);
+      console.error('Login Error:', err);
       alert('Invalid email or password');
     }
   };
