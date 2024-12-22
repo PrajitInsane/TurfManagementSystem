@@ -6,6 +6,7 @@ import Contacts from './components/Contacts'
 import Login from './components/Login'
 import Profile from './components/Profile'
 import SignUp from './components/SignUp'
+import Home from './components/Home'
 import { Routes ,Route} from 'react-router-dom'
 
 
@@ -15,6 +16,7 @@ const App = () => {
     
     <Header/>
         <Routes>
+          <Route path='/' element={<Home/>}></Route>
           <Route path='/about' element={<About/>}></Route>
           <Route path='/contact' element={<Contacts/>}></Route>
           <Route path="/login" element={<Login />} />
