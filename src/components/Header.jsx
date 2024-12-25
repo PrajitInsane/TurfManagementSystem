@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <div className='flex bg-purple-950 px-6 pb-6 pt-4 items-center justify-between'>
-        <h1 className='text-3xl text-purple-300 font-semibold'>BookTurf</h1>
+       <NavLink to='/'> <h1 className='text-3xl text-purple-300 font-semibold'>BookTurf</h1></NavLink>
         <div className='text-xl gap-10 text-purple-300 flex'>
             <button className='hover:bg-black h-9 w-24 rounded'><NavLink to='/' className={({ isActive }) =>
             isActive

@@ -49,7 +49,7 @@ const BookingHistory = () => {
             Book Your  Turf
           </NavLink>
           <NavLink
-            to="/about"
+            to="/cancel"
             className={({ isActive }) =>
               isActive
                 ? 'bg-purple-700 px-4 py-2 rounded-md'
@@ -71,31 +71,30 @@ const BookingHistory = () => {
         </nav>
       </div>
 
-    <div className='flex-1 bg-black  text-purple-300 p-6'>
-      <h1 className="text-2xl font-bold">Your Booking History</h1>
+    <div className='flex-1 bg-black  text-purple-300 p-6 '>
+      <h1 className="text-4xl font-bold text-purple-900 flex justify-center">Your Booking History</h1>
       {bookings.length > 0 ? (
         <div className="mt-4">
           {bookings.map((booking) => (
             <div
               key={booking._id}
-              className="p-4 mb-4 border rounded shadow-sm bg-gray-100"
+              className="p-4 mb-4 border rounded shadow-sm bg-purple-900"
             >
-              <h2 className="text-xl font-semibold">{booking.turfId.name}</h2>
-              <p className="text-gray-700">
+              <p className="text-purple-300">
                 Turf Name: {booking.turfId.turf_name}
               </p>
-              <p className="text-gray-700">
+              <p className="text-purple-300">
                 Location: {booking.turfId.turf_location}
               </p>
-              <p className="text-gray-700">
+              <p className="text-purple-300">
                 Date: {new Date(booking.date).toLocaleDateString()}
               </p>
-              <p className="text-gray-700">Time Slot: {booking.timeSlot}</p>
+              <p className="text-purple-300">Time Slot: {booking.timeSlot}</p>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-700 mt-4">No bookings found or You are not Logged in</p>
+        <p className="text-red-600 mt-4 text-3xl">No bookings found or You are not Logged in</p>
       )}
     </div>
     </div>
