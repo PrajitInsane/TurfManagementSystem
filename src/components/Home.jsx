@@ -1,17 +1,67 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import { bookTurf, getTurfs } from '../api';
+import { NavLink } from 'react-router-dom'; // API functions for booking and fetching turfs
 
-const Home = () => {
+const BookingPage = () => {
+  const [selectedTurf, setSelectedTurf] = useState('');
+  const [turfs, setTurfs] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [isBooking, setIsBooking] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  // Generate time slots (9 AM to 6 PM)
+  const timeSlots = Array.from({ length: 9 }, (_, i) => {
+    const startTime = moment({ hour: 9 }).add(i, 'hours').format('HH:00');
+    const endTime = moment({ hour: 9 }).add(i + 1, 'hours').format('HH:00');
+    return `${startTime} - ${endTime}`;
+  });
+
+  // Fetch turfs on component mount
+  useEffect(() => {
+    const fetchTurfs = async () => {
+      try {
+        const { data } = await getTurfs(); // Fetch turfs from API
+        setTurfs(data);
+      } catch (error) {
+        console.error('Error fetching turfs:', error.response?.data?.message || error.message);
+      }
+    };
+    fetchTurfs();
+  }, []);
+
+  const handleBooking = async () => {
+    if (!selectedTurf || !selectedDate || !selectedTimeSlot) {
+      alert('Please select a turf, date, and time slot!');
+      return;
+    }
+
+    try {
+      setIsBooking(true);
+      const bookingData = {
+        turfId: selectedTurf,
+        date: selectedDate,
+        timeSlot: selectedTimeSlot,
+      };
+      const { data } = await bookTurf(bookingData); // Call API
+      alert(data.message);
+    } catch (error) {
+      console.error('Error booking slot:', error.response?.data?.message || error.message);
+      alert(error.response?.data?.message || 'Failed to book slot.');
+    } finally {
+      setIsBooking(false);
+    }
+  };
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <div
+    <div className="flex h-screen ">
+       <div
         className={`bg-purple-950 text-purple-300 ${
           isOpen ? 'w-64' : 'w-16'
         } transition-width duration-300 flex flex-col`}
@@ -56,16 +106,73 @@ const Home = () => {
           </NavLink>
         </nav>
       </div>
+    <div className='flex-1 bg-black text-purple-900 p-6'>
+      <h1 className="text-4xl font-bold flex justify-center">Welcome To BookTurf</h1>
+      <h1 className='text-3xl font-bold  flex justify-center mt-2'>Booking made easy</h1>
+    <div className="p-6 max-w-lg mx-auto bg-purple-900 text-purple-300 rounded shadow mt-4">
+      <h1 className="text-2xl font-semibold mb-6">Book Your Turf Slot</h1>
 
-      {/* Main Content */}
-      <div className="flex-1 bg-black  text-purple-300 p-6">
-      <h2 className='text-4xl pt-6 text-purple-900 font-bold flex justify-center'>Welcome to BookTurf</h2>
-      <h2 className='text-3xl pt-6 text-purple-900 font-bold flex justify-center'>Booking made easy</h2>
-        
-            
+      {/* Turf Selection */}
+      <div className="mb-6">
+        <label className="block text-lg font-medium mb-2">Select a Turf:</label>
+        <select
+          value={selectedTurf}
+          onChange={(e) => setSelectedTurf(e.target.value)}
+          className="border rounded px-4 py-2 w-full bg-black"
+          calendarClassName="custom-calendar"
+        >
+          <option value="">Select a turf</option>
+          {turfs.map((turf) => (
+            <option key={turf._id} value={turf._id}>
+              {turf.turf_name} - {turf.turf_location}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Date Selection */}
+      <div className="mb-6">
+        <label className="block text-lg font-medium mb-2">Choose a Date:</label>
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          minDate={new Date()} // Disable past dates
+          placeholderText="Select a date"
+          className="border rounded px-4 py-2 bg-black"
+        />
+      </div>
+
+      {/* Time Slot Selection */}
+      <div className="mb-6">
+        <label className="block text-lg font-medium mb-2">Choose a Time Slot:</label>
+        <select
+          value={selectedTimeSlot}
+          onChange={(e) => setSelectedTimeSlot(e.target.value)}
+          className="border rounded px-4 py-2 w-full bg-black"
+        >
+          <option value="">Select a time slot</option>
+          {timeSlots.map((slot, index) => (
+            <option key={index} value={slot}>
+              {slot}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Booking Button */}
+      <button
+        onClick={handleBooking}
+        disabled={isBooking}
+        className={`px-6 py-2 rounded text-white ${
+          isBooking ? 'bg-gray-400' : 'bg-purple-500 hover:bg-purple-600'
+        }`}
+      >
+        {isBooking ? 'Booking...' : 'Book Now'}
+      </button>
+    </div>
+    </div>
     </div>
   );
 };
 
-export default Home;
+export default BookingPage;
