@@ -35,7 +35,7 @@ const Home = () => {
             Book Your  Turf
           </NavLink>
           <NavLink
-            to="/about"
+            to="/cancel"
             className={({ isActive }) =>
               isActive
                 ? 'bg-purple-700 px-4 py-2 rounded-md'
@@ -45,7 +45,7 @@ const Home = () => {
             Cancellation
           </NavLink>
           <NavLink
-            to="/contact"
+            to="/history"
             className={({ isActive }) =>
               isActive
                 ? 'bg-purple-700 px-4 py-2 rounded-md'

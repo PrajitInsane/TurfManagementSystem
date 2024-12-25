@@ -8,6 +8,7 @@ import Profile from './components/Profile'
 import SignUp from './components/SignUp'
 import Home from './components/Home'
 import { Routes ,Route} from 'react-router-dom'
+import BookingHistory from './components/BookingHistory'
 
 
 const App = () => {
@@ -21,7 +22,8 @@ const App = () => {
           <Route path='/contact' element={<Contacts/>}></Route>
           <Route path="/login" element={<Login />} />
           <Route path='/signup' element={<SignUp/>} />
-        
+          <Route path='history' element={<BookingHistory/>}></Route>
+         
         {/* Protect this route */}
         <Route path="/profile" element={<Profile />} />
         </Routes>

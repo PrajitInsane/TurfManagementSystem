@@ -22,8 +22,12 @@ export const login = (email, password) => API.post('/users/login', { email, pass
 export const signup = (name, email, password) => API.post('/users/signup', { name, email, password });
 
 // Fetch profile (protected route)
-export const getProfile = () => API.get('users/profile');
+export const getProfile = () => API.get('/users/profile');
 
 export const bookTurf = (turfId, date, timeSlot) =>
   API.post('/bookings/book', { turfId, date, timeSlot }); // Book a turf
 export const getBookingHistory = () => API.get('/bookings/history');
+
+export const cancelBooking = (bookingId) => API.delete(`/bookings/cancel/${bookingId}`);
+
+export const getDeletedBookings = () => API.get('/bookings/delhistory');
