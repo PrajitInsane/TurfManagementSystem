@@ -39,7 +39,7 @@ const CancelBooking = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-auto">
         <div
         className={`bg-purple-950 text-purple-300 ${
           isOpen ? 'w-64' : 'w-16'
@@ -95,6 +95,8 @@ const CancelBooking = () => {
             <p>Location: {booking.turfId.turf_location}</p>
             <p>Date: {new Date(booking.date).toLocaleDateString()}</p>
             <p>Time Slot: {booking.timeSlot}</p>
+            <p>Number of Players: {booking.numberOfPlayers}</p>
+            <p>Price Paid: {booking.totalPrice}</p>
             </div>
             <div className='mt-6'>
             <button className='bg-purple-950 h-12 w-36 rounded ' onClick={() => handleCancel(booking._id)}>

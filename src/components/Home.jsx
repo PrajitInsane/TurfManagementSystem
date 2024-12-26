@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 import { bookTurf, getTurfs } from '../api';
-import { NavLink } from 'react-router-dom'; // API functions for booking and fetching turfs
+import { NavLink } from 'react-router-dom';
+// API functions for booking and fetching turfs
 
 const BookingPage = () => {
   const [selectedTurf, setSelectedTurf] = useState('');
   const [turfs, setTurfs] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+  const [selectedNumberOfPlayers, setSelectedNumberOfPlayers] = useState('');
   const [isBooking, setIsBooking] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
+  const [razorpay, setRazorpay] = useState(null);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -37,30 +41,35 @@ const BookingPage = () => {
   }, []);
 
   const handleBooking = async () => {
-    if (!selectedTurf || !selectedDate || !selectedTimeSlot) {
-      alert('Please select a turf, date, and time slot!');
+    if (!selectedTurf || !selectedDate || !selectedTimeSlot || !selectedNumberOfPlayers) {
+      alert('Please select a turf, date, time slot, and number of players!');
       return;
     }
 
     try {
       setIsBooking(true);
-      const bookingData = {
-        turfId: selectedTurf,
-        date: selectedDate,
-        timeSlot: selectedTimeSlot,
-      };
-      const { data } = await bookTurf(bookingData); // Call API
-      alert(data.message);
+            const bookingData = {
+              turfId: selectedTurf,
+              date: selectedDate,
+              timeSlot: selectedTimeSlot,
+              numberOfPlayers: selectedNumberOfPlayers,
+            };
+            const { data } = await bookTurf(bookingData); // Book a turf
+            alert(data.message);
+        
+     
     } catch (error) {
       console.error('Error booking slot:', error.response?.data?.message || error.message);
-      alert(error.response?.data?.message || 'Failed to book slot.');
+-      alert(error.response?.data?.message || 'Failed to book slot.');
+
     } finally {
       setIsBooking(false);
     }
   };
 
+
   return (
-    <div className="flex h-screen ">
+    <div className="flex h-auto">
        <div
         className={`bg-purple-950 text-purple-300 ${
           isOpen ? 'w-64' : 'w-16'
@@ -156,6 +165,25 @@ const BookingPage = () => {
               {slot}
             </option>
           ))}
+        </select>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-lg font-medium mb-2">Choose a Time Slot:</label>
+        <select
+          value={selectedNumberOfPlayers}
+          onChange={(e) => setSelectedNumberOfPlayers(e.target.value)}
+          className="border rounded px-4 py-2 w-full bg-black"
+        >
+         <option value="">Select number of players</option>
+        {[...Array(9).keys()].map((i) => {
+          const players = i + 8; // Generates numbers from 8 to 16
+          return (
+            <option key={players} value={players}>
+              {players}
+            </option>
+          );
+})}
         </select>
       </div>
 

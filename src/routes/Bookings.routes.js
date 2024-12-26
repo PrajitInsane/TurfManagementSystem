@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Bookings.model');
+const Turf=require('../models/Turfs.model');
 const jwt = require('jsonwebtoken');
 const bcrypt= require('bcryptjs');
 
@@ -20,7 +21,7 @@ const authenticate = (req, res, next) => {
 // POST: Book a turf
 router.post('/book', authenticate, async (req, res) => {
   try {
-    const { turfId, date, timeSlot } = req.body;
+    const { turfId, date, timeSlot ,numberOfPlayers} = req.body;
     const userId = req.user.id;
 
     // Ensure no overlapping bookings
@@ -28,9 +29,15 @@ router.post('/book', authenticate, async (req, res) => {
     if (existingBooking) {
       return res.status(400).json({ message: 'Time slot already booked!' });
     }
+    const turf = await Turf.findById(turfId);
+    if (!turf) {
+      return res.status(404).json({ message: 'Turf not found!' });
+    }
 
+    // Calculate total price
+    const totalPrice = turf.turf_price * numberOfPlayers;
     // Create booking
-    const newBooking = new Booking({ userId, turfId, date, timeSlot });
+    const newBooking = new Booking({ userId, turfId, date, timeSlot, numberOfPlayers, totalPrice, });
     await newBooking.save();
 
     res.status(201).json({ message: 'Booking successful', booking: newBooking });

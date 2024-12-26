@@ -24,7 +24,7 @@ const BookingHistory = () => {
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-auto">
          <div
         className={`bg-purple-950 text-purple-300 ${
           isOpen ? 'w-64' : 'w-16'
@@ -90,6 +90,8 @@ const BookingHistory = () => {
                 Date: {new Date(booking.date).toLocaleDateString()}
               </p>
               <p className="text-purple-300">Time Slot: {booking.timeSlot}</p>
+              <p className='text-purple-300'>Number Of Players: {booking.numberOfPlayers}</p>
+              <p className='text-purple-300'>Price Paid :{booking.totalPrice}</p>
             </div>
           ))}
         </div>
