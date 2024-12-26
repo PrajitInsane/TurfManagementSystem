@@ -18,7 +18,7 @@ app.use('/api/turfs',TurfRoute);
 app.use('/api/bookings',BookingRoute);
 
 
-mongoose.connect('mongodb+srv://admin:12345@nodeapi.ydbub.mongodb.net/?retryWrites=true&w=majority&appName=NodeAPI')
+mongoose.connect('MongoDB_URL')
 .then(()=>{
     console.log("Connected");
     app.listen(5000,()=>{
